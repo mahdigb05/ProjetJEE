@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -21,9 +22,12 @@ public class ServiceControlleur {
 
     @PostMapping("/ajouterService")
     @RolesAllowed({"ETUDIANT"})
-    public ResponseEntity<?> ajouterService(@Valid @RequestBody Service service){
-        serviceGestionnaire.ajouterService(service);
-        return new ResponseEntity<Service>(service, HttpStatus.OK);
+    public ResponseEntity<?> ajouterService(@RequestBody HashMap<String,Object> map ){
+        String email = (String) map.get("email");
+        String desc = (String) map.get("description");
+        String etat = (String) map.get("etat");
+        serviceGestionnaire.ajouterService(email,desc,etat);
+        return new ResponseEntity<>("service ajouter avec succes", HttpStatus.OK);
     }
 
     @PutMapping("/modifierService")
@@ -34,7 +38,7 @@ public class ServiceControlleur {
     }
 
     @GetMapping("/services")
-    @RolesAllowed({"ADMINISTRATEUR"})
+    @RolesAllowed({"ADMINISTRATEUR","ETUDIANT"})
     public Collection<Service> getAllServices(){
         Collection<Service> services = serviceGestionnaire.getAllService();
         return services;
@@ -47,7 +51,7 @@ public class ServiceControlleur {
     }
 
     @DeleteMapping("/supprimerService/{id_service}")
-    @RolesAllowed({"ADMINISTRATEUR"})
+    @RolesAllowed({"ADMINISTRATEUR","ETUDIANT"})
     public ResponseEntity<?> supprimerService(@PathVariable Long id_service){
         serviceGestionnaire.supprimerService(id_service);
         return new ResponseEntity<>("Service supprimer avec succes", HttpStatus.OK);

@@ -33,7 +33,7 @@ public class ModuleControlleur {
     }
 
     @GetMapping("/modules")
-    @RolesAllowed({"ADMINISTRATEUR"})
+    @RolesAllowed({"ADMINISTRATEUR", "ETUDIANT"})
     public Collection<Module> getAllModule(){
         Collection<Module> modules = moduleGestionnaire.getAllModules();
         return modules;

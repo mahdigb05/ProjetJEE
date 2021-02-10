@@ -1,6 +1,8 @@
 package com.jee.Gestionnaires;
 
+import com.jee.Beans.Utilisateur;
 import com.jee.Repositories.ServiceDAO;
+import com.jee.Repositories.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,15 @@ public class ServiceGestionnaire {
     @Autowired
     private ServiceDAO serviceDAO;
 
-    public void ajouterService(com.jee.Beans.Service service){
+    @Autowired
+    private UtilisateurDAO utilisateurDAO;
+
+    public void ajouterService(String email,String desc, String etat){
+        com.jee.Beans.Service service = new com.jee.Beans.Service();
+        Utilisateur user = utilisateurDAO.findByEmail(email);
+        service.setDescription(desc);
+        service.setEtat(etat);
+        service.setUtilisateur(user);
         serviceDAO.save(service);
     }
     public void modifierService(@Valid com.jee.Beans.Service service){

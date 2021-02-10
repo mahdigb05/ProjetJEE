@@ -44,7 +44,7 @@ public class LoginControlleurs {
 
         final GeUserDetail userDetail = (GeUserDetail) geUserDetailService.loadUserByUsername(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetail);
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwt, userDetail.getUtilisateur().getRole());
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwt, userDetail.getUtilisateur().getRole(), userDetail.getUsername());
         return  new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 }
